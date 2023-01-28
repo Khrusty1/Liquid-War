@@ -1,0 +1,153 @@
+
+
+
+
+
+class Worm {
+    private int position;
+    private int speed;
+
+    public Worm() {
+        position = 0;
+        speed = 1;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public void move() {
+        position += speed;
+    }
+}
+
+
+class Race {
+    private Worm[] worms;
+
+    public Race(int numWorms) {
+        worms = new Worm[numWorms];
+        for (int i = 0; i < numWorms; i++) {
+            worms[i] = new Worm();
+        }
+    }
+
+    public void update() {
+        for (Worm worm : worms) {
+            worm.move();
+        }
+    }
+
+    public Worm getWinner() {
+        Worm winner = worms[0];
+        for (Worm worm : worms) {
+            if (worm.getPosition() > winner.getPosition()) {
+                winner = worm;
+            }
+        }
+        return winner;
+    }
+}
+
+
+
+class Maze {
+    private char[][] tiles;
+
+    public Maze(int width, int height) {
+        tiles = new char[height][width];
+        // Initialize the maze with walls
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                tiles[i][j] = '#';
+            }
+        }
+    }
+
+    public boolean isValidMove(int x, int y) {
+        if (x < 0 || x >= tiles[0].length || y < 0 || y >= tiles.length) {
+            return false;
+        }
+        return tiles[y][x] != '#';
+    }
+
+    public void setTile(int x, int y, char value) {
+        tiles[y][x] = value;
+    }
+
+    public void display() {
+        for (int i = 0; i < tiles.length; i++) {
+            for (int j = 0; j < tiles[i].length; j++) {
+                System.out.print(tiles[i][j]);
+            }
+            System.out.println();
+        }
+    }
+}
+
+class Worm {
+    private int positionX;
+    private int positionY;
+    private int speed;
+    private Maze maze;
+
+    public Worm(Maze maze) {
+        this.maze = maze;
+        positionX = 0;
+        positionY = 0;
+        speed = 1;
+    }
+
+    public int getPositionX() {
+        return positionX;
+    }
+
+    public int getPositionY() {
+        return positionY;
+    }
+
+    public void setPosition(int positionX, int positionY) {
+        this.positionX = positionX;
+        this.positionY = positionY;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public boolean canMove(int newX, int newY) {
+        return maze.isValidMove(newX, newY);
+    }
+
+    public void move() {
+        if (canMove(positionX + speed, positionY)) {
+            positionX += speed;
+        }
+        if (canMove(positionX, positionY + speed)) {
+            positionY += speed;
+        }
+    }
+}
+
+class Race {
+    private Worm[] worms;
+    private Maze maze;
+
+    public Race(int numWorms, Maze
+
