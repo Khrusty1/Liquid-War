@@ -1,0 +1,58 @@
+import java.util.Scanner;
+
+public class Game {
+    private Worm[] worms;
+    private Maze maze;
+    private Scanner input;
+    private int[] bets;
+    private int[] playerBalances;
+    private int[] wormScores;
+
+    public Game(int numWorms, Maze maze) {
+        input = new Scanner(System.in);
+        this.maze = maze;
+        worms = new Worm[numWorms];
+        bets = new int[numWorms];
+        playerBalances = new int[numPlayers];
+        wormScores = new int[numWorms];
+        for (int i = 0; i < numWorms; i++) {
+            worms[i] = new Worm(maze);
+            // Place each worm at a random starting position in the maze
+            int x, y;
+            do {
+                x = (int)(Math.random() * maze.getWidth());
+                y = (int)(Math.random() * maze.getHeight());
+            } while (!maze.isValidMove(x, y));
+            worms[i].setPosition(x, y);
+            maze.setTile(x, y, (char)('0' + i));
+        }
+    }
+
+    public void updateScores() {
+        for (int i = 0; i < worms.length; i++) {
+            wormScores[i] = worms[i].getDistanceTravelled();
+        }
+    }
+    
+    public void viewStandings() {
+        // sort the worms by their scores
+        for (int i = 0; i < worms.length - 1; i++) {
+            for (int j = 0; j < worms.length - i - 1; j++) {
+                if (wormScores[j] < wormScores[j + 1]) {
+                    int temp = wormScores[j];
+                    wormScores[j] = wormScores[j + 1];
+                    wormScores[j + 1] = temp;
+                    Worm tempWorm = worms[j];
+                    worms[j] = worms[j + 1];
+                    worms[j + 1] = tempWorm;
+                }
+            }
+        }
+        
+        System.out.println("Worm standings:");
+        for (int i = 0; i < worms.length; i++) {
+            System.out.println((i + 1) + ". Worm " + worms[i].getId() + ": " + wormScores[i] + " points");
+        }
+    }
+    //... other methods 
+}
