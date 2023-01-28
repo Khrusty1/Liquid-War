@@ -1,0 +1,16 @@
+import java.util.Scanner;
+
+public class Game {
+    private Worm[] worms;
+    private Maze maze;
+    private Scanner input;
+    private int[] bets;
+    private int[] playerBalances;
+    private int[] wormScores;
+    private int[] playerScores;
+
+    public Game(int numWorms, Maze maze) {
+        input = new Scanner(System.in);
+        this.maze = maze;
+        worms = new Worm[numWorms];
+        bets = new int[numW
